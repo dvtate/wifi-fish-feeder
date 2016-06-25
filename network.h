@@ -39,7 +39,7 @@ void serverInit(){
 
 }
 
-bool checkInput(unit32_t& msRemaining){
+bool checkInput(unit32_t& msRemaining, bool foodRemaining){
   
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -87,6 +87,10 @@ bool checkInput(unit32_t& msRemaining){
  
   client.println("<br><br>");
   client.println("Click <a href=\"/FEED=TRUE\">here</a> to feed your fish.<br>");
+  
+  if (!foodRemaining)
+    client.println("<script>alert(\"WARNING\\n You are out of fish food!!!!!\");</script>");
+  
   client.println("</html>");
   
   delay(1);
