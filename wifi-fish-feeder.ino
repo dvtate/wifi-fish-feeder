@@ -1,4 +1,3 @@
-
 #include "Arduino.h"
 #include <Servo.h> 
 #include <inttypes.h>
@@ -28,7 +27,7 @@ void feedFish(uint8_t& slotNum, int8_t initialPosition = -180){
 
 void setup(){
   
-  feedServo.attach(A3); 
+  feedServo.attach(0); 
   feedServo.write(-180);
 
   Serial.begin(115200);
