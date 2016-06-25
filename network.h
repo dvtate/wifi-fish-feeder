@@ -1,6 +1,7 @@
 #ifndef FISH_NETWORK_H
 #define FISH_NETWORK_H
 
+#include <inttypes.h>
 #include <ESP8266WiFi.h>
 
 WiFiServer server(80);
@@ -10,17 +11,17 @@ void wifiInit(){
   // Connect to WiFi network
   Serial.println();
   Serial.print("Connecting to ");
-  Serial.println(ssid);
+  Serial.println(SSID);
   
-  WiFi.begin(ssid, password);
+  WiFi.begin(SSID, PASSWORD);
   
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   
-  Serial.println("");
-  Serial.println("WiFi connected :D");
+  //Serial.println("");
+  Serial.println("WiFi connected:D");
   
   
 }
@@ -29,7 +30,7 @@ void serverInit(){
   
   // Start the server
   server.begin();
-  Serial.println("Server started");
+  Serial.println("Server is up");
   
   // Print the IP address
   Serial.print("Use this URL to connect: ");
@@ -39,7 +40,7 @@ void serverInit(){
 
 }
 
-bool checkInput(unit32_t& msRemaining, bool foodRemaining){
+bool checkInput(uint32_t& msRemaining, bool foodRemaining){
   
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -54,7 +55,7 @@ bool checkInput(unit32_t& msRemaining, bool foodRemaining){
     delay(1);
   
   // Read the first line of the request
-  String request = client.readStringUntil(‘\r’);
+  String request = client.readStringUntil('\r');
   Serial.println(request);
   client.flush();
   /*
@@ -82,10 +83,10 @@ bool checkInput(unit32_t& msRemaining, bool foodRemaining){
   client.println("<!DOCTYPE HTML>");
   client.println("<html>");
   
-  client.print("Minutes until fish gets fed automatically: ");
+  client.print("auto-feed in: ");
   client.println(msRemaining / 1000 / 60);
  
-  client.println("<br><br>");
+  client.println("mins.<br><br>");
   client.println("Click <a href=\"/FEED=TRUE\">here</a> to feed your fish.<br>");
   
   if (!foodRemaining)
