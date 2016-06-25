@@ -2,7 +2,7 @@
 #include "Arduino.h"
 #include <Servo.h> 
 #include <inttypes.h>
-#include <limits.h>
+#include <ESP8266WiFi.h>
 
 #define MILISECONDS_PER_DAY 86400000
 
@@ -27,11 +27,14 @@ void feedFish(uint8_t& slotNum, int8_t initialPosition = -180){
 
 
 void setup(){
+  
   feedServo.attach(A3); 
   feedServo.write(-180);
 
-  Serial.begin(9600);
-  Serial.println(sizeof(unsigned long));
+  Serial.begin(115200);
+  
+  wifiInit();
+  serverInit();
   
 } 
 
@@ -42,7 +45,7 @@ void loop(){
   static uint8_t slot = 0;
 
   // check the user input from the internet
-  if (checkInput()) {
+  if (checkInput(msRemaining, (slot <= 5))) {
     feedFish(slot);
     msRemaining = MILISECONDS_PER_DAY;
     return;    
