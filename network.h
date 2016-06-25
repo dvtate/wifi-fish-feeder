@@ -1,4 +1,7 @@
+#ifndef FISH_NETWORK_H
+#define FISH_NETWORK_H
 
+#include <ESP8266WiFi.h>
 
 WiFiServer server(80);
 
@@ -36,7 +39,7 @@ void serverInit(){
 
 }
 
-bool checkInput(){
+bool checkInput(unit32_t& msRemaining){
   
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -79,8 +82,8 @@ bool checkInput(){
   client.println("<!DOCTYPE HTML>");
   client.println("<html>");
   
-  client.print("Seconds until fish gets fed automatically: ");
-  client.println(444);
+  client.print("Minutes until fish gets fed automatically: ");
+  client.println(msRemaining / 1000 / 60);
  
   client.println("<br><br>");
   client.println("Click <a href=\"/FEED=TRUE\">here</a> to feed your fish.<br>");
@@ -91,4 +94,9 @@ bool checkInput(){
   Serial.println("");
 
   return ret;
+
 }
+
+
+
+#endif
